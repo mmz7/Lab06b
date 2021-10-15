@@ -1,5 +1,7 @@
 package com.zhangmegan.lab06b;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +35,26 @@ public class MainFragment extends Fragment{
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        String array[] = getResources().getStringArray(R.array.days);
         super.onViewCreated(view, savedInstanceState);
         TabLayout tabLayout = getActivity().findViewById(R.id.tab_layout);
-        new TabLayoutMediator(tabLayout, vp, (tab, position) -> tab.setText("I am " + (position+1))
+        new TabLayoutMediator(tabLayout, vp, (tab, position) -> tab.setText(array[position])
             ).attach();
         TextView textView = view.findViewById(R.id.textview);
+        SharedPreferences sP = getActivity().getSharedPreferences("com.zhangmegan.lab06b",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sP.edit();
+        String str = sP.getString(""+position, "");
+        textView.setText(str);
+        Button reset = view.findViewById(R.id.resetButton);
+        reset.setText(position+"");
+//        reset.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                textView.setText("");
+//                editor.putString(position+"", "");
+//                editor.apply();
+//            }
+//        });
     }
 }
